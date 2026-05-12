@@ -113,3 +113,25 @@ npm run start
 - อย่า commit ไฟล์ `.env` หรือ API key ขึ้น repository
 - ควรเก็บ API key ไว้ใน environment variables ของเครื่องหรือแพลตฟอร์ม deploy เท่านั้น
 - หาก API key เคยถูกเผยแพร่โดยไม่ตั้งใจ ควรสร้าง key ใหม่และปิด key เดิมทันที
+
+## AI Provider Fallback
+
+ลำดับการเรียกโมเดลใน `/api/chat` คือ:
+
+1. Gemini API
+2. Groq
+3. OpenRouter
+
+ตัวแปรที่ใช้:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+GROQ_API_KEY=your_groq_api_key
+OPENROUTER_API_KEY=your_openrouter_api_key
+
+GEMINI_MODEL=gemini-2.5-flash
+GROQ_MODEL=llama-3.1-8b-instant
+OPENROUTER_MODEL=google/gemini-2.5-flash
+```
+
+ถ้าไม่ใส่ `*_MODEL` ระบบจะใช้ค่า default ด้านบน และถ้า Gemini เจอปัญหาเช่นโหลดสูง `503` ระบบจะลองตัวสำรองให้อัตโนมัติ

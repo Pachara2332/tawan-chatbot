@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Thai Programming Mentor",
-  description: "A simple OpenAI-powered chatbot built with Next.js.",
+  title: "Tawan Chatbot",
+  description: "A Thai Gemini-powered chatbot built with Next.js.",
 };
 
 export default function RootLayout({
