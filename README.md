@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tawan Chatbot
 
-## Getting Started
+Tawan Chatbot คือเว็บแชตบอตภาษาไทยที่สร้างด้วย Next.js และเชื่อมต่อกับ Google Gemini API เพื่อพูดคุย ตอบคำถาม และให้คำแนะนำกับผู้ใช้งานผ่านหน้าเว็บที่เรียบง่าย ใช้งานได้ทันทีจากเบราว์เซอร์
 
-First, run the development server:
+## คำอธิบายสั้นสำหรับ Description
+
+เว็บแชตบอตภาษาไทยชื่อ Tawan สร้างด้วย Next.js และ Gemini 2.5 Flash สำหรับพูดคุย ตอบคำถาม และให้คำแนะนำอย่างเป็นมิตร
+
+## ฟีเจอร์
+
+- หน้าแชตแบบเรียลไทม์สำหรับส่งข้อความและรับคำตอบจาก AI
+- ใช้โมเดล `gemini-2.5-flash` ผ่านแพ็กเกจ `@google/genai`
+- API route ฝั่งเซิร์ฟเวอร์ที่ `/api/chat` สำหรับซ่อน API key จากฝั่ง client
+- จำกัดประวัติข้อความล่าสุด 20 รายการก่อนส่งให้โมเดล
+- มีสถานะกำลังโหลด ข้อความ error และการส่งด้วยปุ่ม Enter
+- ออกแบบ UI ด้วย Tailwind CSS
+
+## เทคโนโลยีที่ใช้
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Google Gen AI SDK
+- ESLint
+
+## การติดตั้ง
+
+ติดตั้ง dependencies:
+
+```bash
+npm install
+```
+
+สร้างไฟล์ `.env` ที่ root ของโปรเจกต์ แล้วใส่ค่า API key:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+> หมายเหตุ: ในโปรเจกต์มีตัวแปร `OPENAI_API_KEY` ได้เช่นกัน แต่โค้ดแชตหลักตอนนี้เรียกใช้งานผ่าน `GEMINI_API_KEY`
+
+## การรันโปรเจกต์
+
+รัน development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+เปิดเว็บที่:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## คำสั่งที่ใช้บ่อย
 
-## Learn More
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+รันโปรเจกต์สำหรับพัฒนา
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Build โปรเจกต์สำหรับ production
 
-## Deploy on Vercel
+```bash
+npm run start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+รัน production server หลังจาก build แล้ว
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+```
+
+ตรวจสอบคุณภาพโค้ดด้วย ESLint
+
+## โครงสร้างโปรเจกต์
+
+```text
+app/
+  api/chat/route.ts   API route สำหรับเรียก Gemini
+  globals.css         สไตล์หลักและ Tailwind CSS
+  layout.tsx          layout หลักของแอป
+  page.tsx            หน้าแชตหลัก
+public/               ไฟล์ static
+models.txt            รายการ/บันทึกเกี่ยวกับโมเดล
+test-gemini.mjs       สคริปต์ทดสอบ Gemini SDK
+```
+
+## การ Deploy
+
+โปรเจกต์นี้สามารถ deploy บนแพลตฟอร์มที่รองรับ Next.js ได้ เช่น Vercel หรือ Node.js hosting ทั่วไป โดยต้องตั้งค่า environment variable ต่อไปนี้บนระบบ deploy:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+จากนั้น build และรันด้วย:
+
+```bash
+npm run build
+npm run start
+```
+
+## หมายเหตุด้านความปลอดภัย
+
+- อย่า commit ไฟล์ `.env` หรือ API key ขึ้น repository
+- ควรเก็บ API key ไว้ใน environment variables ของเครื่องหรือแพลตฟอร์ม deploy เท่านั้น
+- หาก API key เคยถูกเผยแพร่โดยไม่ตั้งใจ ควรสร้าง key ใหม่และปิด key เดิมทันที
