@@ -245,11 +245,6 @@ function getErrorStatus(error: unknown) {
   return undefined;
 }
 
-function isFallbackWorthTrying(error: unknown) {
-  const status = getErrorStatus(error);
-  return !status || (status !== 401 && status !== 403);
-}
-
 async function callGemini(
   messages: ClientMessage[],
   systemInstruction: string
@@ -363,10 +358,6 @@ async function generateWithFallback(
       const message = error instanceof Error ? error.message : "Unknown error";
       errors.push(`${provider.name}${status ? ` ${status}` : ""}: ${message}`);
       console.error(`${provider.name} API Error:`, error);
-
-      if (!isFallbackWorthTrying(error)) {
-        break;
-      }
     }
   }
 

@@ -1,7 +1,11 @@
 import { GoogleGenAI } from "@google/genai";
 
 async function run() {
-  const ai = new GoogleGenAI({ apiKey: "AIzaSyB5gKxlTqAF1Yk-lJREiqxQMj2FTtF-OZo" });
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error("Missing GEMINI_API_KEY in environment variables.");
+  }
+
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   
   try {
     const models = await ai.models.list();
